@@ -28,7 +28,7 @@ public class App implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args)  {
         log.info("\n !! Going to call load data !! \n");
         loadService.loadData();
     }

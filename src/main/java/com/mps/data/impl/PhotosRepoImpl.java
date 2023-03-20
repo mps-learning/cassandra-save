@@ -20,13 +20,11 @@ import java.util.List;
 public class PhotosRepoImpl implements PhotosRepo {
 
     private final DatabaseQueries queries;
-    private final ReactiveSession reactiveSession;
     private final ReactiveCqlTemplate reactiveCqlTemplate;
 
     public PhotosRepoImpl(DatabaseQueries queries,
                           ReactiveSession reactiveSession) {
         this.queries = queries;
-        this.reactiveSession = reactiveSession;
         this.reactiveCqlTemplate = new ReactiveCqlTemplate(reactiveSession);
     }
 

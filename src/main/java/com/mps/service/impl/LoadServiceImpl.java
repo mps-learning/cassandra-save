@@ -37,7 +37,7 @@ public class LoadServiceImpl implements LoadService {
                 .getAllPhotos()
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(photosRepo::savePhoto)
-                .doOnNext(photo->{log.info("save the photo {}, total saved {}",photo.getId(),savedPhotos.incrementAndGet());}) //save photo return
+                .doOnNext(photo-> log.info("save the photo {}, total saved {}",photo.getId(),savedPhotos.incrementAndGet())) //save photo return
                 .doOnError(th -> log.error(" error occurred in saving", th))
                 .blockLast();
     }
