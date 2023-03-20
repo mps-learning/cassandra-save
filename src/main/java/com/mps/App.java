@@ -6,6 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.Duration;
+import java.time.Instant;
+
 /**
  * Hello world!
  *
@@ -23,8 +26,11 @@ public class App implements CommandLineRunner {
 
 
     public static void main( String[] args ){
-        System.out.println( "Hello World!" );
-        SpringApplication.run(App.class);
+        Instant start = Instant.now();
+        SpringApplication.run(App.class).close();
+
+        log.info("existing now, total time taken {}" ,
+                Duration.between(Instant.now(),start));
     }
 
     @Override

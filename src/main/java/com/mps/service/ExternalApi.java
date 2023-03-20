@@ -1,6 +1,6 @@
 package com.mps.service;
 
-import com.mps.data.Photos;
+import com.mps.data.Item;
 import reactor.core.publisher.Flux;
 
 /**
@@ -10,5 +10,5 @@ import reactor.core.publisher.Flux;
  * </p>
  **/
 public interface ExternalApi {
-    Flux<Photos> getAllPhotos();
+    Flux<Item> getAllItems();
 }

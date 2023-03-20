@@ -9,7 +9,7 @@ import lombok.Data;
  * </p>
  **/
 @Data
-public class Photos {
+public class Item {
     private int id;
     private int  albumId;
     private String title;

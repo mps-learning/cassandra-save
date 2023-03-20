@@ -1,6 +1,7 @@
 package com.mps.data.impl;
 
 import com.mps.data.*;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.cassandra.ReactiveSession;
 import org.springframework.data.cassandra.core.cql.ReactiveCqlTemplate;
@@ -17,45 +18,40 @@ import java.util.List;
  **/
 @Slf4j
 @Service
-public class PhotosRepoImpl implements PhotosRepo {
+public class ItemsRepoImpl implements ItemsRepo {
 
     private final DatabaseQueries queries;
     private final ReactiveCqlTemplate reactiveCqlTemplate;
 
-    public PhotosRepoImpl(DatabaseQueries queries,
+    public ItemsRepoImpl(DatabaseQueries queries,
                           ReactiveSession reactiveSession) {
         this.queries = queries;
         this.reactiveCqlTemplate = new ReactiveCqlTemplate(reactiveSession);
+
+    }
+
+    @PostConstruct
+    @Override
+    public void setupRepo() {
+        reactiveCqlTemplate.execute(queries.getCreateKeyspace()).block();
+        reactiveCqlTemplate.execute(queries.getCreateTable()).block();
     }
 
     @Override
-    public List<Photos> getAllPhotos() {
+    public List<Item> getAllItems() {
         return null;
     }
 
-    @Override
-    public void saveAllPhotos(List<Photos> photos) {
-        verifyAndSetupDB();
-    }
 
     @Override
-    public Mono<Boolean> savePhoto(Photos photo) {
-        log.debug("savePhoto is called for photo {} ",photo);
-        
-        verifyAndSetupDB();
-
+    public Mono<Boolean> saveItem(Item item) {
+        log.debug("saveItem is called for item {} ",item);
         return reactiveCqlTemplate
                 .execute(queries.getInsertTable(),
-                        photo.getId(),
-                        photo.getAlbumId(),
-                        photo.getTitle(),
-                        photo.getUrl(),
-                        photo.getThumbnailUrl());
-    }
-
-
-    private void verifyAndSetupDB() {
-        reactiveCqlTemplate.execute(queries.getCreateKeyspace()).block();
-        reactiveCqlTemplate.execute(queries.getCreateTable()).block();
+                        item.getId()+ new Double(Math.random()).intValue(),
+                        item.getAlbumId(),
+                        item.getTitle(),
+                        item.getUrl(),
+                        item.getThumbnailUrl());
     }
 }

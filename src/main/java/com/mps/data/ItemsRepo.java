@@ -10,8 +10,8 @@ import java.util.List;
  * <p>
  * </p>
  **/
-public interface PhotosRepo {
-    List<Photos> getAllPhotos();
-    void saveAllPhotos(List<Photos> photos);
-    Mono<Boolean> savePhoto(Photos photo);
+public interface ItemsRepo {
+    void setupRepo();
+    List<Item> getAllItems();
+    Mono<Boolean> saveItem(Item item);
 }

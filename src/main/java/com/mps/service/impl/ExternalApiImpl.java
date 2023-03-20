@@ -3,7 +3,7 @@ package com.mps.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mps.data.Photos;
+import com.mps.data.Item;
 import com.mps.service.ExternalApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,13 @@ import java.util.List;
 @Service
 public class ExternalApiImpl implements ExternalApi {
 
-    private static final String JSON_PLACEHOLDER_TYPICODE_URL = "https://jsonplaceholder.typicode.com/photos";
+    private static final String JSON_PLACEHOLDER_TYPICODE_URL = "https://jsonplaceholder.typicode.com/items";
     private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    public Flux<Photos> getAllPhotos() {
-//      return getPhotosFluxFromExternalApi();
-        return getPhotosFluxFromFile();
+    public Flux<Item> getAllItems() {
+//      return getItemsFluxFromExternalApi();
+        return getItemsFluxFromFile();
     }
 
     /**
@@ -39,18 +39,18 @@ public class ExternalApiImpl implements ExternalApi {
      * So mimicking it as below.
      * @return
      */
-    private Flux<Photos> getPhotosFluxFromFile()  {
-        log.info("\n Using local json file to generate Flux of Photos !!\n");
-        List<Photos> photos = new ArrayList<>();
+    private Flux<Item> getItemsFluxFromFile()  {
+        log.info("\n Using local json file to generate Flux of Items !!\n");
+        List<Item> items = new ArrayList<>();
         try {
-            File file = ResourceUtils.getFile("classpath:photos.json");
-            JsonNode photosNode = MAPPER.readTree(file);
-            if (photosNode.isArray()) {
-                for (JsonNode photoNode : photosNode) {
-                    photos.add(MAPPER.readValue(photoNode.toString(), Photos.class));
+            File file = ResourceUtils.getFile("classpath:items.json");
+            JsonNode itemsNode = MAPPER.readTree(file);
+            if (itemsNode.isArray()) {
+                for (JsonNode itemNode : itemsNode) {
+                    items.add(MAPPER.readValue(itemNode.toString(), Item.class));
                 }
             }
-            return Flux.fromIterable(photos);
+            return Flux.fromIterable(items);
         }catch (Exception e) {
             log.error("unable to read file.", e);
             return Flux.empty();
@@ -58,7 +58,7 @@ public class ExternalApiImpl implements ExternalApi {
     }
 
 
-    private Flux<Photos> getPhotosFluxFromExternalApi() {
+    private Flux<Item> getItemsFluxFromExternalApi() {
         log.info("\nGoing to use HTTP Client !!\n");
         return HttpClient
                 .create()
@@ -68,8 +68,8 @@ public class ExternalApiImpl implements ExternalApi {
                 .asString()
                 .map(e -> {
                     try {
-                        log.info("\n (((( this is the value {} ))))",e);//Json not broken per photo.
-                        return MAPPER.readValue(e, Photos.class);
+                        log.info("\n (((( this is the value {} ))))",e);//Json not broken per item.
+                        return MAPPER.readValue(e, Item.class);
                     } catch (JsonProcessingException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -80,7 +80,7 @@ public class ExternalApiImpl implements ExternalApi {
         //                .uri(JSON_PLACEHOLDER_TYPICODE_URL)
         //                .accept(MediaType.APPLICATION_JSON)
         //                .retrieve()
-        //                .bodyToFlux(Photos.class);
+        //                .bodyToFlux(Items.class);
     }
 
 
