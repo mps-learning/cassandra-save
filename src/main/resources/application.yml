@@ -1,0 +1,19 @@
+spring:
+  cassandra:
+    localDatacenter: dc1
+data:
+  load:
+    cassandra:
+      cql:
+        create-keyspace: create keyspace if not exists mps_keyspace 
+                     with replication = {'class':'SimpleStrategy', 'replication_factor':1}
+        create-table: create table if not exists mps_keyspace.mps_table (
+                        id int,
+                        albumId int,
+                        title text,
+                        url text,
+                        thumbnailUrl text,    
+                        primary key (id,title)
+                    )
+        insert-table: insert into mps_keyspace.mps_table (id,albumId,title,url,thumbnailUrl) 
+                      values (?,?,?,?,?)
