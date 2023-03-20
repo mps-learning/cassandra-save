@@ -29,7 +29,7 @@ public class App implements CommandLineRunner {
         Instant start = Instant.now();
         SpringApplication.run(App.class).close();
 
-        log.info("existing now, total time taken {}" ,
+        log.info("Now existing main(), Total time taken {}" ,
                 Duration.between(Instant.now(),start));
     }
 
