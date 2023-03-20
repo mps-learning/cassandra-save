@@ -1,13 +1,14 @@
 # cassandra-load
 
-A sample project to test the reactive select and inert in cassandra
+A sample project with reactive cassandra code
 
 ## Setup Instructions
-I'm connecting to cassandra-cluster on my machine in docker 
-Feel free to skip following steps, if you have some remote cassandra cluster you can connect to, then feel free to skip following steps)
-Install Docker desktop if you do not have  
+I'm connecting to cassandra-cluster on my machine in docker, if you have some remote cassandra cluster you can connect to, feel free to skip following steps. 
 
 ### Step 1: 
+Install Docker desktop if you do not have  
+
+### Step 2: 
 Run following commands to set up a cassandra docker cluster 
 
 ```shell
