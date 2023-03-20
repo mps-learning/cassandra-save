@@ -37,3 +37,21 @@ Run following commands to set up a cassandra docker cluster
     cassandra:latest
 ```
 
+### Step 3
+Build this maven application and run the `App.java` containing main method
+
+### Step 4
+If you are running casandra into docker as I am, 
+you can verify the keyspace and table generation and data inserts with below commands
+
+```shell
+docker exec -it cassandra-node-1  /bin/bash
+```
+
+```sql
+select keyspace_name,table_name 
+from system_schema.tables 
+where keyspace_name='mps_keyspace'; 
+
+select * from mps_keyspace.mps_table ;
+```

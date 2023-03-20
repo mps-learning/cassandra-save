@@ -1,5 +1,6 @@
 package com.mps.service.impl;
 
+import com.mps.data.Photos;
 import com.mps.data.PhotosRepo;
 import com.mps.service.ExternalApi;
 import com.mps.service.LoadService;
@@ -31,14 +32,25 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public void loadData() {
-        log.info("\n going to call external Api to get All photos. \n");
+        log.info("\n Load data called. \n");
 
         externalApi
                 .getAllPhotos()
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(photosRepo::savePhoto)
-                .doOnNext(photo-> log.info("save the photo {}, total saved {}",photo.getId(),savedPhotos.incrementAndGet())) //save photo return
-                .doOnError(th -> log.error(" error occurred in saving", th))
+                .doOnNext(this::logSaveSuccess) //save photo returns boolean then how this chain
+                .doOnError(LoadServiceImpl::logSaveError)
                 .blockLast();
+    }
+
+    private static void logSaveError(Throwable th) {
+        log.error(" error occurred in saving",
+                th);
+    }
+
+    private void logSaveSuccess(Photos photo) {
+        log.info("saved the photo {}, total saved {}",
+                photo.getId(),
+                savedPhotos.incrementAndGet());
     }
 }

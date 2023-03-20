@@ -40,6 +40,7 @@ public class PhotosRepoImpl implements PhotosRepo {
 
     @Override
     public Mono<Boolean> savePhoto(Photos photo) {
+        log.debug("savePhoto is called for photo {} ",photo);
         
         verifyAndSetupDB();
 
